@@ -1,0 +1,18 @@
+﻿# Secrets — never commit
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Downloaded / generated at runtime
+models/
+screenshots/
+*.log
+
+# Personal Obsidian vault (conversation logs, notes) — created automatically on first run
+vault/
+
+# Local tool settings
+.claude/

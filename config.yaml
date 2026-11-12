@@ -1,0 +1,52 @@
+# JARVIS configuration
+# Secrets (API keys) do NOT go in this file — put them in .env (copy .env.example).
+
+user:
+  name: Adrian
+
+anthropic:
+  api_key: ""    # keep blank; set the key in .env instead (see .env.example)
+  model: claude-sonnet-5
+  vision_model: claude-sonnet-5
+  max_history_turns: 20
+
+ollama:
+  url: http://localhost:11434
+  model: llama3.2
+  # used automatically if the Anthropic API call fails (network/rate-limit/etc.)
+
+finnhub:
+  api_key: ""    # keep blank; set the key in .env instead (see .env.example)
+
+obsidian:
+  vault_path: vault       # relative paths are resolved from the project folder
+  daily_notes_folder: Daily
+  jarvis_notes_folder: Jarvis
+
+voice:
+  wake_words: [jarvis, javas, jarvis's]
+  whisper_model: small           # used for transcribing actual commands (accuracy matters)
+  wake_word_whisper_model: tiny  # used only to spot the wake word (speed matters more)
+  whisper_device: cpu
+  whisper_compute_type: int8
+  input_device: null      # null = system default microphone
+  silence_timeout_sec: 1.6  # how long to wait after you stop talking before deciding you're done
+  command_timeout_sec: 15   # max length of a single spoken command
+  vad_aggressiveness: 1     # 0-3; lower is more sensitive / less likely to clip quiet speech
+  tts_rate: 2               # speaking speed, -10..10 (0 = normal, higher = faster)
+  tts_voice: "David"        # substring of an installed voice name; "" = system default
+                            # installed: David (US m), Hazel (GB f), Zira (US f)
+
+gui:
+  theme_accent: "#00d9ff"
+  start_minimized: false
+
+vision:
+  hand_tracking: true      # heavy (webcam + CPU inference); set false to disable gestures
+  camera_index: 0          # which webcam to use (0 = default)
+  show_camera_window: true   # true shows a debug window with the detected gesture label
+  swipe_gesture: false     # horizontal swipe = show/hide window (off: too easy to trigger by accident)
+  # Gestures: open palm = wake JARVIS, fist = stop/cancel, horizontal swipe = show/hide window
+
+browser:
+  edge_path: "msedge"     # resolved via PATH / App Paths; override with full .exe path if needed
