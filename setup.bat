@@ -15,7 +15,9 @@ if not exist ".venv\Scripts\python.exe" (
 
 echo Installing packages - this can take several minutes...
 ".venv\Scripts\python.exe" -m pip install --upgrade pip --quiet
-".venv\Scripts\python.exe" -m pip install -r requirements.txt || goto :fail
+rem constraints.txt pins the exact versions known to work together; newer releases
+rem of the speech/vision libraries can crash, so this also downgrades them if needed.
+".venv\Scripts\python.exe" -m pip install -r requirements.txt -c constraints.txt || goto :fail
 
 if not exist ".env" (
     copy ".env.example" ".env" >nul
