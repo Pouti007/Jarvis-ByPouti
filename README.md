@@ -1,35 +1,88 @@
 # Jarvis-ByPouti
 
-An Iron Man–style JARVIS desktop assistant for Windows 11, powered by Claude.
+An Iron Man–style JARVIS desktop assistant for Windows, powered by Claude.
 
-- **Voice**: wake word "Jarvis", local speech-to-text with faster-whisper, Windows SAPI text-to-speech
-- **Brain**: Claude API with tool use (falls back to a local Ollama model if offline)
-- **Computer control**: open apps and URLs, web search, volume, typing, shortcuts, PowerShell
-- **Vision**: describe your screen (all monitors or one) or your webcam
-- **Second brain**: Obsidian vault integration, with every conversation logged to a daily note
+- **Voice**: say "Jarvis", then your command — local speech-to-text (faster-whisper), spoken replies (Windows TTS)
+- **Text**: or just type commands into the box at the bottom of the dashboard
+- **Computer control**: open apps and websites, web search, volume, typing, keyboard shortcuts, PowerShell
+- **Vision**: ask about your screen (all monitors or one) or what your webcam sees
+- **Second brain**: Obsidian vault integration; every conversation is logged to a daily note
 - **Market data**: live stock and index quotes via Finnhub
-- **HUD**: dark arc-reactor dashboard (PyQt6) with transcript, notes, system stats and a text command box; minimizes to the tray
-- **Optional hand gestures** (MediaPipe): open palm wakes Jarvis, fist stops it
+- **HUD**: dark arc-reactor dashboard with transcript, notes and system stats; minimizes to the tray
+- **Hand gestures** (optional): open palm wakes Jarvis, fist stops it
 
-## Setup
+## Install on a new PC
 
-Requires Python 3.12 on Windows.
+**You need:** Windows 10 or 11, a microphone, and an [Anthropic API key](https://console.anthropic.com).
+Optional: a webcam (vision and gestures) and a free [Finnhub key](https://finnhub.io/register) (stock quotes).
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-copy .env.example .env    # then put your API keys in .env
-```
+### 1. Install Python 3.12
 
-Adjust everything else (user name, voice, models, gestures) in `config.yaml`.
-
-## Run
-
-Double-click `run_jarvis.bat`, or:
+Open PowerShell and run:
 
 ```powershell
-.\.venv\Scripts\python.exe main.py            # with dashboard
-.\.venv\Scripts\python.exe main.py --minimized  # straight to the tray
+winget install Python.Python.3.12
 ```
 
-The Whisper and gesture models download automatically on first use.
+(Or download Python 3.12 from [python.org](https://www.python.org/downloads/). It must be 3.12 — newer versions aren't supported by the speech libraries yet.)
+
+### 2. Download JARVIS
+
+**Option A — no Git needed:** on this GitHub page click the green **Code** button → **Download ZIP**, then extract the ZIP somewhere permanent, e.g. `C:\Users\<you>\Jarvis`.
+
+**Option B — with Git:**
+
+```powershell
+git clone https://github.com/Pouti007/Jarvis-ByPouti.git
+cd Jarvis-ByPouti
+```
+
+### 3. Run the setup
+
+Open the folder and double-click **`setup.bat`**. It will:
+
+1. create a private Python environment in the folder (`.venv`)
+2. install all the packages (takes a few minutes)
+3. open a `.env` file in Notepad — paste your API key(s) over the placeholders, then **save and close** Notepad
+
+### 4. Start JARVIS
+
+Double-click **`run_jarvis.bat`**. The first launch downloads the speech models (~500 MB), so give it a minute before it greets you.
+
+### 5. (Optional) Start automatically at login
+
+Double-click **`add_to_startup.bat`**. JARVIS will then launch minimized in the system tray every time you log in.
+To undo it, press <kbd>Win</kbd>+<kbd>R</kbd>, type `shell:startup`, and delete `JARVIS.lnk`.
+
+## Using it
+
+- Say **"Jarvis"**, wait for the beep, then speak your command — or type it in the box and press Enter.
+- Try: *"what can you do?"*, *"open Spotify"*, *"what's on my screen?"*, *"how's Microsoft stock?"*, *"what do you see?"*
+- Closing the window hides it to the tray. Right-click the tray icon to show it again or quit.
+
+## Configuration
+
+Everything except your API keys lives in **`config.yaml`**:
+
+| Setting | What it does |
+| --- | --- |
+| `user.name` | What JARVIS calls you |
+| `voice.tts_voice` / `voice.tts_rate` | Voice (`David`, `Zira`, `Hazel`…) and speaking speed (-10 to 10) |
+| `voice.whisper_model` | Speech accuracy vs speed: `base` is lighter, `small` is more accurate |
+| `vision.hand_tracking` | `true` / `false` — turn webcam gestures on or off |
+| `obsidian.vault_path` | Where notes and conversation logs are stored (default: `vault` in this folder) |
+
+API keys go in **`.env`** only — it's excluded from Git so they're never uploaded.
+
+Restart JARVIS (tray icon → Quit, then `run_jarvis.bat`) after changing either file.
+
+## Updating
+
+If you used Git, pull the latest version and re-run setup in case packages changed:
+
+```powershell
+git pull
+.\setup.bat
+```
+
+If you downloaded the ZIP, download it again and copy your `.env` into the new folder.
