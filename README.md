@@ -1,4 +1,4 @@
-# Javis2-ByAdders
+# Jarvis-ByPouti
 
 An Iron Man–style JARVIS desktop assistant for Windows 11, powered by Claude.
 
