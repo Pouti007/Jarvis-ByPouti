@@ -188,6 +188,7 @@ def main() -> None:
         dashboard.show()
 
     brain = JarvisBrain(config, vault)
+    dashboard.add_transcript("System", brain.describe_providers())
 
     voice_cfg = config["voice"]
     voice = VoiceEngine(

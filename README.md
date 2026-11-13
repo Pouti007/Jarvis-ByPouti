@@ -1,6 +1,6 @@
 # Jarvis-ByPouti
 
-An Iron Man–style JARVIS desktop assistant for Windows, powered by Claude.
+An Iron Man–style JARVIS desktop assistant for Windows, powered by Claude — or, for free, by open models hosted by NVIDIA.
 
 - **Voice**: say "Jarvis", then your command — local speech-to-text (faster-whisper), spoken replies (Windows TTS)
 - **Text**: or just type commands into the box at the bottom of the dashboard
@@ -13,7 +13,13 @@ An Iron Man–style JARVIS desktop assistant for Windows, powered by Claude.
 
 ## Install on a new PC
 
-**You need:** Windows 10 or 11, a microphone, and an [Anthropic API key](https://console.anthropic.com).
+**You need:** Windows 10 or 11, a microphone, and at least one AI key:
+
+- **NVIDIA — free.** Sign in at [build.nvidia.com](https://build.nvidia.com) with a free NVIDIA account, open any model's page and click **Get API Key** (it starts with `nvapi-`). The free tier is rate-limited, which is plenty for personal use.
+- **Anthropic (Claude) — paid, best quality.** Create a key at [console.anthropic.com](https://console.anthropic.com).
+
+If you add both, Claude is used first and NVIDIA takes over automatically if Claude fails (e.g. out of credits).
+
 Optional: a webcam (vision and gestures) and a free [Finnhub key](https://finnhub.io/register) (stock quotes).
 
 ### 1. Install Python 3.12
@@ -43,7 +49,7 @@ Open the folder and double-click **`setup.bat`**. It will:
 
 1. create a private Python environment in the folder (`.venv`)
 2. install all the packages (takes a few minutes)
-3. open a `.env` file in Notepad — paste your API key(s) over the placeholders, then **save and close** Notepad
+3. open a `.env` file in Notepad — paste each key you have right after its `=` sign (no spaces or quotes; leave the `#` lines alone), then **save and close** Notepad
 
 ### 4. Start JARVIS
 
@@ -67,6 +73,8 @@ Everything except your API keys lives in **`config.yaml`**:
 | Setting | What it does |
 | --- | --- |
 | `user.name` | What JARVIS calls you |
+| `brain.provider` | `auto`, `nvidia` (prefer the free models, saves Claude credits) or `anthropic` |
+| `nvidia.model` / `nvidia.vision_model` | Which free NVIDIA models to use (the main one must support tool calling) |
 | `voice.tts_voice` / `voice.tts_rate` | Voice (`David`, `Zira`, `Hazel`…) and speaking speed (-10 to 10) |
 | `voice.whisper_model` | Speech accuracy vs speed: `base` is lighter, `small` is more accurate |
 | `vision.hand_tracking` | `true` / `false` — turn webcam gestures on or off |

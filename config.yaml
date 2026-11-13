@@ -4,6 +4,19 @@
 user:
   name: Adrian
 
+brain:
+  # auto     = use Claude if ANTHROPIC_API_KEY is set, otherwise the free NVIDIA models
+  # nvidia   = prefer the free NVIDIA models (saves Anthropic credits)
+  # anthropic = prefer Claude
+  # Whichever is preferred, the other one (if its key is set) is used as a backup.
+  provider: auto
+
+nvidia:
+  # Free, rate-limited hosted models. Key goes in .env as NVIDIA_API_KEY (from build.nvidia.com).
+  base_url: https://integrate.api.nvidia.com/v1
+  model: nvidia/nemotron-3-super-120b-a12b   # must support tool calling; alternatives: moonshotai/kimi-k2.6, openai/gpt-oss-20b
+  vision_model: google/gemma-4-31b-it        # used for screen/camera questions
+
 anthropic:
   api_key: ""    # keep blank; set the key in .env instead (see .env.example)
   model: claude-sonnet-5
